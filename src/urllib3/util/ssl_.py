@@ -12,12 +12,12 @@ from .url import _BRACELESS_IPV6_ADDRZ_RE, _IPV4_RE
 
 SSLContext = None
 SSLTransport = None
-HAS_SNI = False
+HAS_SNI: bool = False
 HAS_NEVER_CHECK_COMMON_NAME = False
 IS_PYOPENSSL = False
 IS_SECURETRANSPORT = False
 ALPN_PROTOCOLS = ["http/1.1"]
-USE_DEFAULT_SSLCONTEXT_CIPHERS = False
+USE_DEFAULT_SSLCONTEXT_CIPHERS: bool = False
 
 _TYPE_VERSION_INFO = Tuple[int, int, int, str, int]
 
