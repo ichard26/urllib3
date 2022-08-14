@@ -29,8 +29,9 @@ try:
 except ImportError:
     brotli = None
 
+zstd: Any
 try:
-    import zstandard as zstd  # type: ignore[import]
+    import zstandard as zstd  # type: ignore[no-redef]
 
     # The package 'zstandard' added the 'eof' property starting
     # in v0.18.0 which we require to ensure a complete and

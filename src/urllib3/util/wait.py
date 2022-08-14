@@ -1,5 +1,6 @@
 import select
 import socket
+import sys
 from functools import partial
 from typing import List, Optional, Tuple
 
@@ -27,6 +28,13 @@ __all__ = ["wait_for_read", "wait_for_write"]
 #
 # So: on Windows we use select(), and everywhere else we use poll(). We also
 # fall back to select() in case poll() is somehow broken or missing.
+
+if sys.platform == "win32":
+    POLLIN = 0
+    POLLOUT = 0
+else:
+    POLLIN = select.POLLIN
+    POLLOUT = select.POLLOUT
 
 
 def select_wait_for_socket(
@@ -63,9 +71,9 @@ def poll_wait_for_socket(
         raise RuntimeError("must specify at least one of read=True, write=True")
     mask = 0
     if read:
-        mask |= select.POLLIN
+        mask |= POLLIN
     if write:
-        mask |= select.POLLOUT
+        mask |= POLLOUT
     poll_obj = select.poll()
     poll_obj.register(sock, mask)
 

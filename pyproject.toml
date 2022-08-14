@@ -1,7 +1,7 @@
 # This file is protected via CODEOWNERS
 
 [build-system]
-requires = ["hatchling>=1.6.0,<2"]
+requires = ["hatchling>=1.7.1,<2"]
 build-backend = "hatchling.build"
 
 [project]
@@ -64,3 +64,17 @@ socks = [
 
 [tool.hatch.version]
 path = "src/urllib3/_version.py"
+
+[tool.hatch.build.targets.wheel.hooks.mypyc]
+# enable-by-default = false
+dependencies = ["hatch-mypyc>=0.13.0"]
+require-runtime-dependencies = true
+require-runtime-features = [
+  "brotli",
+  "secure",
+  "socks",
+  "zstd",
+]
+mypy-args = [
+  "--no-warn-unused-ignores",
+]
