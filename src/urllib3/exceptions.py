@@ -5,6 +5,8 @@ from http.client import IncompleteRead as httplib_IncompleteRead
 from typing import TYPE_CHECKING, Callable, List, Optional, Tuple, Union
 
 if TYPE_CHECKING:
+    from typing_extensions import Final
+
     from .connection import HTTPConnection
     from .connectionpool import ConnectionPool
     from .response import HTTPResponse
@@ -224,8 +226,8 @@ class URLSchemeUnknown(LocationValueError):
 class ResponseError(HTTPError):
     """Used as a container for an error reason supplied in a MaxRetryError."""
 
-    GENERIC_ERROR = "too many error responses"
-    SPECIFIC_ERROR = "too many {status_code} error responses"
+    GENERIC_ERROR: "Final" = "too many error responses"
+    SPECIFIC_ERROR: "Final" = "too many {status_code} error responses"
 
 
 class SecurityWarning(HTTPWarning):

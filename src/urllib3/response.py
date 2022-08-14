@@ -65,7 +65,7 @@ from .util.response import is_fp_closed, is_response_to_head
 from .util.retry import Retry
 
 if TYPE_CHECKING:
-    from typing_extensions import Literal
+    from typing_extensions import Final, Literal
 
     from .connectionpool import HTTPConnectionPool
 
@@ -114,9 +114,9 @@ class DeflateDecoder(ContentDecoder):
 
 class GzipDecoderState:
 
-    FIRST_MEMBER = 0
-    OTHER_MEMBERS = 1
-    SWALLOW_DATA = 2
+    FIRST_MEMBER: "Final" = 0
+    OTHER_MEMBERS: "Final" = 1
+    SWALLOW_DATA: "Final" = 2
 
 
 class GzipDecoder(ContentDecoder):

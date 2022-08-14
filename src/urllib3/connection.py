@@ -12,6 +12,7 @@ from typing import (
     TYPE_CHECKING,
     Any,
     Callable,
+    ClassVar,
     Iterable,
     Mapping,
     NamedTuple,
@@ -114,7 +115,7 @@ class HTTPConnection(_HTTPConnection):
 
     #: Disable Nagle's algorithm by default.
     #: ``[(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1)]``
-    default_socket_options: connection._TYPE_SOCKET_OPTIONS = [
+    default_socket_options: ClassVar[connection._TYPE_SOCKET_OPTIONS] = [
         (socket.IPPROTO_TCP, socket.TCP_NODELAY, 1)
     ]
 

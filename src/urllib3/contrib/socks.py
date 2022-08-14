@@ -167,11 +167,6 @@ class SOCKSProxyManager(PoolManager):
     defined SOCKS proxy.
     """
 
-    pool_classes_by_scheme = {
-        "http": SOCKSHTTPConnectionPool,
-        "https": SOCKSHTTPSConnectionPool,
-    }
-
     def __init__(
         self,
         proxy_url: str,
@@ -216,4 +211,7 @@ class SOCKSProxyManager(PoolManager):
 
         super().__init__(num_pools, headers, **connection_pool_kw)
 
-        self.pool_classes_by_scheme = SOCKSProxyManager.pool_classes_by_scheme
+        self.pool_classes_by_scheme = {
+            "http": SOCKSHTTPConnectionPool,
+            "https": SOCKSHTTPSConnectionPool,
+        }

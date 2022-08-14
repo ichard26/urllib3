@@ -15,7 +15,7 @@ import re
 import ssl
 import struct
 import tempfile
-from typing import Any, List, Optional, Tuple, Type
+from typing import TYPE_CHECKING, Any, List, Optional, Tuple, Type
 
 from .bindings import (  # type: ignore[attr-defined]
     CFArray,
@@ -29,6 +29,9 @@ from .bindings import (  # type: ignore[attr-defined]
     SecKeychainRef,
     Security,
 )
+
+if TYPE_CHECKING:
+    from typing_extensions import Final
 
 # This regular expression is used to grab PEM data out of a PEM bundle.
 _PEM_CERTS_RE = re.compile(
@@ -418,53 +421,53 @@ class SecurityConst:
     A class object that acts as essentially a namespace for Security constants.
     """
 
-    kSSLSessionOptionBreakOnServerAuth = 0
+    kSSLSessionOptionBreakOnServerAuth: "Final" = 0
 
-    kSSLProtocol2 = 1
-    kSSLProtocol3 = 2
-    kTLSProtocol1 = 4
-    kTLSProtocol11 = 7
-    kTLSProtocol12 = 8
+    kSSLProtocol2: "Final" = 1
+    kSSLProtocol3: "Final" = 2
+    kTLSProtocol1: "Final" = 4
+    kTLSProtocol11: "Final" = 7
+    kTLSProtocol12: "Final" = 8
     # SecureTransport does not support TLS 1.3 even if there's a constant for it
-    kTLSProtocol13 = 10
-    kTLSProtocolMaxSupported = 999
+    kTLSProtocol13: "Final" = 10
+    kTLSProtocolMaxSupported: "Final" = 999
 
-    kSSLClientSide = 1
-    kSSLStreamType = 0
+    kSSLClientSide: "Final" = 1
+    kSSLStreamType: "Final" = 0
 
-    kSecFormatPEMSequence = 10
+    kSecFormatPEMSequence: "Final" = 10
 
-    kSecTrustResultInvalid = 0
-    kSecTrustResultProceed = 1
+    kSecTrustResultInvalid: "Final" = 0
+    kSecTrustResultProceed: "Final" = 1
     # This gap is present on purpose: this was kSecTrustResultConfirm, which
     # is deprecated.
-    kSecTrustResultDeny = 3
-    kSecTrustResultUnspecified = 4
-    kSecTrustResultRecoverableTrustFailure = 5
-    kSecTrustResultFatalTrustFailure = 6
-    kSecTrustResultOtherError = 7
+    kSecTrustResultDeny: "Final" = 3
+    kSecTrustResultUnspecified: "Final" = 4
+    kSecTrustResultRecoverableTrustFailure: "Final" = 5
+    kSecTrustResultFatalTrustFailure: "Final" = 6
+    kSecTrustResultOtherError: "Final" = 7
 
-    errSSLProtocol = -9800
-    errSSLWouldBlock = -9803
-    errSSLClosedGraceful = -9805
-    errSSLClosedNoNotify = -9816
-    errSSLClosedAbort = -9806
+    errSSLProtocol: "Final" = -9800
+    errSSLWouldBlock: "Final" = -9803
+    errSSLClosedGraceful: "Final" = -9805
+    errSSLClosedNoNotify: "Final" = -9816
+    errSSLClosedAbort: "Final" = -9806
 
-    errSSLXCertChainInvalid = -9807
-    errSSLCrypto = -9809
-    errSSLInternal = -9810
-    errSSLCertExpired = -9814
-    errSSLCertNotYetValid = -9815
-    errSSLUnknownRootCert = -9812
-    errSSLNoRootCert = -9813
-    errSSLHostNameMismatch = -9843
-    errSSLPeerHandshakeFail = -9824
-    errSSLPeerUserCancelled = -9839
-    errSSLWeakPeerEphemeralDHKey = -9850
-    errSSLServerAuthCompleted = -9841
-    errSSLRecordOverflow = -9847
+    errSSLXCertChainInvalid: "Final" = -9807
+    errSSLCrypto: "Final" = -9809
+    errSSLInternal: "Final" = -9810
+    errSSLCertExpired: "Final" = -9814
+    errSSLCertNotYetValid: "Final" = -9815
+    errSSLUnknownRootCert: "Final" = -9812
+    errSSLNoRootCert: "Final" = -9813
+    errSSLHostNameMismatch: "Final" = -9843
+    errSSLPeerHandshakeFail: "Final" = -9824
+    errSSLPeerUserCancelled: "Final" = -9839
+    errSSLWeakPeerEphemeralDHKey: "Final" = -9850
+    errSSLServerAuthCompleted: "Final" = -9841
+    errSSLRecordOverflow: "Final" = -9847
 
-    errSecVerifyFailed = -67808
-    errSecNoTrustSettings = -25263
-    errSecItemNotFound = -25300
-    errSecInvalidTrustSettings = -25262
+    errSecVerifyFailed: "Final" = -67808
+    errSecNoTrustSettings: "Final" = -25263
+    errSecItemNotFound: "Final" = -25300
+    errSecInvalidTrustSettings: "Final" = -25262
