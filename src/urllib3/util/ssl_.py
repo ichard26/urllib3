@@ -5,12 +5,12 @@ import sys
 import warnings
 from binascii import unhexlify
 from hashlib import md5, sha1, sha256
-from typing import TYPE_CHECKING, Dict, Optional, Tuple, Union, cast, overload
+from typing import TYPE_CHECKING, Any, Dict, Optional, Tuple, Union, cast, overload
 
 from ..exceptions import ProxySchemeUnsupported, SNIMissingWarning, SSLError
 from .url import _BRACELESS_IPV6_ADDRZ_RE, _IPV4_RE
 
-SSLContext = None
+SSLContext: Optional["ssl.SSLContext"] = None
 SSLTransport = None
 HAS_SNI: bool = False
 HAS_NEVER_CHECK_COMMON_NAME = False
@@ -110,7 +110,7 @@ if TYPE_CHECKING:
 
 
 # Mapping from 'ssl.PROTOCOL_TLSX' to 'TLSVersion.X'
-_SSL_VERSION_TO_TLS_VERSION: Dict[int, int] = {}
+_SSL_VERSION_TO_TLS_VERSION: Dict[int, "ssl.TLSVersion"] = {}
 
 try:  # Do we have ssl at all?
     import ssl
@@ -276,11 +276,11 @@ def resolve_ssl_version(candidate: Union[None, int, str]) -> int:
 
 def create_urllib3_context(
     ssl_version: Optional[int] = None,
-    cert_reqs: Optional[int] = None,
+    cert_reqs: Optional["ssl.VerifyMode"] = None,
     options: Optional[int] = None,
     ciphers: Optional[str] = None,
-    ssl_minimum_version: Optional[int] = None,
-    ssl_maximum_version: Optional[int] = None,
+    ssl_minimum_version: Optional["ssl.TLSVersion"] = None,
+    ssl_maximum_version: Optional["ssl.TLSVersion"] = None,
 ) -> "ssl.SSLContext":
     """All arguments have the same meaning as ``ssl_wrap_socket``.
 
@@ -340,6 +340,7 @@ def create_urllib3_context(
         # 'ssl_version' is deprecated and will be removed in the future.
         else:
             # Use 'ssl_minimum_version' and 'ssl_maximum_version' instead.
+            assert ssl_version is not None
             ssl_minimum_version = _SSL_VERSION_TO_TLS_VERSION.get(
                 ssl_version, TLSVersion.MINIMUM_SUPPORTED
             )
@@ -359,7 +360,7 @@ def create_urllib3_context(
             )
 
     # PROTOCOL_TLS is deprecated in Python 3.10 so we always use PROTOCOL_TLS_CLIENT
-    context = SSLContext(PROTOCOL_TLS_CLIENT)
+    context: "ssl.SSLContext" = SSLContext(PROTOCOL_TLS_CLIENT)  # type: ignore[operator]
 
     if ssl_minimum_version is not None:
         context.minimum_version = ssl_minimum_version
@@ -437,7 +438,7 @@ def ssl_wrap_socket(
     sock: socket.socket,
     keyfile: Optional[str] = ...,
     certfile: Optional[str] = ...,
-    cert_reqs: Optional[int] = ...,
+    cert_reqs: Optional["ssl.VerifyMode"] = ...,
     ca_certs: Optional[str] = ...,
     server_hostname: Optional[str] = ...,
     ssl_version: Optional[int] = ...,
@@ -456,7 +457,7 @@ def ssl_wrap_socket(
     sock: socket.socket,
     keyfile: Optional[str] = ...,
     certfile: Optional[str] = ...,
-    cert_reqs: Optional[int] = ...,
+    cert_reqs: Optional["ssl.VerifyMode"] = ...,
     ca_certs: Optional[str] = ...,
     server_hostname: Optional[str] = ...,
     ssl_version: Optional[int] = ...,
@@ -474,7 +475,7 @@ def ssl_wrap_socket(
     sock: socket.socket,
     keyfile: Optional[str] = None,
     certfile: Optional[str] = None,
-    cert_reqs: Optional[int] = None,
+    cert_reqs: Optional["ssl.VerifyMode"] = None,
     ca_certs: Optional[str] = None,
     server_hostname: Optional[str] = None,
     ssl_version: Optional[int] = None,

@@ -383,8 +383,8 @@ class HTTPSConnection(HTTPConnection):
     ca_cert_dir: Optional[str] = None
     ca_cert_data: Union[None, str, bytes] = None
     ssl_version: Optional[Union[int, str]] = None
-    ssl_minimum_version: Optional[int] = None
-    ssl_maximum_version: Optional[int] = None
+    ssl_minimum_version: Optional["ssl.TLSVersion"] = None
+    ssl_maximum_version: Optional["ssl.TLSVersion"] = None
     assert_fingerprint: Optional[str] = None
     tls_in_tls_required: bool = False
 
@@ -568,8 +568,8 @@ def _ssl_wrap_socket_and_match_hostname(
     *,
     cert_reqs: Union[None, str, int],
     ssl_version: Union[None, str, int],
-    ssl_minimum_version: Optional[int],
-    ssl_maximum_version: Optional[int],
+    ssl_minimum_version: Optional["ssl.TLSVersion"],
+    ssl_maximum_version: Optional["ssl.TLSVersion"],
     cert_file: Optional[str],
     key_file: Optional[str],
     key_password: Optional[str],
