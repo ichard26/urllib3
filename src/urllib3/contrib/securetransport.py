@@ -327,6 +327,21 @@ _read_callback_pointer = Security.SSLReadFunc(_read_callback)
 _write_callback_pointer = Security.SSLWriteFunc(_write_callback)
 
 
+def makefile(
+    self: Union["WrappedSocket", socket_cls],
+    mode: Union[
+        "Literal['r']", "Literal['w']", "Literal['rw']", "Literal['wr']", "Literal['']"
+    ] = "r",
+    buffering: Optional[int] = None,
+    *args: Any,
+    **kwargs: Any,
+) -> Union[BinaryIO, TextIO]:
+    # We disable buffering with SecureTransport because it conflicts with
+    # the buffering that ST does internally (see issue #1153 for more).
+    buffering = 0
+    return socket_cls.makefile(self, mode, buffering, *args, **kwargs)  # type: ignore[arg-type]
+
+
 class WrappedSocket:
     """
     API-compatibility wrapper for Python's OpenSSL wrapped socket object.
@@ -745,23 +760,7 @@ class WrappedSocket:
         else:
             raise ssl.SSLError(f"Unknown TLS version: {protocol!r}")
 
-
-def makefile(
-    self: socket_cls,
-    mode: Union[
-        "Literal['r']", "Literal['w']", "Literal['rw']", "Literal['wr']", "Literal['']"
-    ] = "r",
-    buffering: Optional[int] = None,
-    *args: Any,
-    **kwargs: Any,
-) -> Union[BinaryIO, TextIO]:
-    # We disable buffering with SecureTransport because it conflicts with
-    # the buffering that ST does internally (see issue #1153 for more).
-    buffering = 0
-    return socket_cls.makefile(self, mode, buffering, *args, **kwargs)
-
-
-WrappedSocket.makefile = makefile  # type: ignore[attr-defined]
+    makefile = makefile
 
 
 class SecureTransportContext:

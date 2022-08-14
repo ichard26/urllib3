@@ -426,8 +426,7 @@ class WrappedSocket:
     def version(self) -> str:
         return self.connection.get_protocol_version_name()  # type: ignore[no-any-return]
 
-
-WrappedSocket.makefile = socket_cls.makefile  # type: ignore[attr-defined]
+    makefile = socket_cls.makefile
 
 
 class PyOpenSSLContext:
