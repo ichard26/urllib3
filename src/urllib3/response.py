@@ -149,43 +149,6 @@ class GzipDecoder(ContentDecoder):
         return self._obj.flush()
 
 
-if brotli is not None:
-
-    class BrotliDecoder(ContentDecoder):
-        # Supports both 'brotlipy' and 'Brotli' packages
-        # since they share an import name. The top branches
-        # are for 'brotlipy' and bottom branches for 'Brotli'
-        def __init__(self) -> None:
-            self._obj = brotli.Decompressor()
-            if hasattr(self._obj, "decompress"):
-                setattr(self, "decompress", self._obj.decompress)
-            else:
-                setattr(self, "decompress", self._obj.process)
-
-        def flush(self) -> bytes:
-            if hasattr(self._obj, "flush"):
-                return self._obj.flush()  # type: ignore[no-any-return]
-            return b""
-
-
-if zstd is not None:
-
-    class ZstdDecoder(ContentDecoder):
-        def __init__(self) -> None:
-            self._obj = zstd.ZstdDecompressor().decompressobj()
-
-        def decompress(self, data: bytes) -> bytes:
-            if not data:
-                return b""
-            return self._obj.decompress(data)  # type: ignore[no-any-return]
-
-        def flush(self) -> bytes:
-            ret = self._obj.flush()
-            if not self._obj.eof:
-                raise DecodeError("Zstandard data is incomplete")
-            return ret  # type: ignore[no-any-return]
-
-
 class MultiDecoder(ContentDecoder):
     """
     From RFC7231:
@@ -215,9 +178,13 @@ def _get_decoder(mode: str) -> ContentDecoder:
         return GzipDecoder()
 
     if brotli is not None and mode == "br":
+        from ._mypyc_hacks._brotli import BrotliDecoder
+
         return BrotliDecoder()
 
     if zstd is not None and mode == "zstd":
+        from ._mypyc_hacks._zstd import ZstdDecoder
+
         return ZstdDecoder()
 
     return DeflateDecoder()

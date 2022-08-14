@@ -35,10 +35,9 @@ try:  # Compiled with SSL?
 
     BaseSSLError = ssl.SSLError
 except (ImportError, AttributeError):
-    ssl = None  # type: ignore[assignment]
+    from ._mypyc_hacks import BaseSSLError  # type: ignore[misc]  # noqa: F401
 
-    class BaseSSLError(BaseException):  # type: ignore[no-redef]
-        pass
+    ssl = None  # type: ignore[assignment]
 
 
 from ._version import __version__

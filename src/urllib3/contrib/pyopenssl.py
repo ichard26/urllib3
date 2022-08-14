@@ -47,9 +47,7 @@ try:
     from cryptography.x509 import UnsupportedExtension  # type: ignore[attr-defined]
 except ImportError:
     # UnsupportedExtension is gone in cryptography >= 2.1.0
-    class UnsupportedExtension(Exception):  # type: ignore[no-redef]
-        pass
-
+    from ._mypyc_hacks import UnsupportedExtension
 
 import logging
 import ssl

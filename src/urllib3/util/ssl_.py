@@ -5,7 +5,7 @@ import sys
 import warnings
 from binascii import unhexlify
 from hashlib import md5, sha1, sha256
-from typing import TYPE_CHECKING, Any, Dict, Optional, Tuple, Union, cast, overload
+from typing import TYPE_CHECKING, Dict, Optional, Tuple, Union, cast, overload
 
 from ..exceptions import ProxySchemeUnsupported, SNIMissingWarning, SSLError
 from .url import _BRACELESS_IPV6_ADDRZ_RE, _IPV4_RE
@@ -99,15 +99,12 @@ def _is_has_never_check_common_name_reliable(
 if TYPE_CHECKING:
     from ssl import VerifyMode
 
-    from typing_extensions import Literal, TypedDict
+    from typing_extensions import Literal
 
+    from ._mypyc_hacks._typing_extensions import (
+        _TYPE_PEER_CERT_RET_DICT as _TYPE_PEER_CERT_RET_DICT,
+    )
     from .ssltransport import SSLTransport as SSLTransportType
-
-    class _TYPE_PEER_CERT_RET_DICT(TypedDict, total=False):
-        subjectAltName: Tuple[Tuple[str, str], ...]
-        subject: Tuple[Tuple[Tuple[str, str], ...], ...]
-        serialNumber: str
-
 
 # Mapping from 'ssl.PROTOCOL_TLSX' to 'TLSVersion.X'
 _SSL_VERSION_TO_TLS_VERSION: Dict[int, "ssl.TLSVersion"] = {}

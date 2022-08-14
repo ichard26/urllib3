@@ -17,18 +17,7 @@ from typing import OrderedDict as OrderedDictType
 from typing import Set, Tuple, TypeVar, Union, cast, overload
 
 if TYPE_CHECKING:
-
-    # We can only import Protocol if TYPE_CHECKING because it's a development
-    # dependency, and is not available at runtime.
-    from typing_extensions import Protocol
-
-    class HasGettableStringKeys(Protocol):
-        def keys(self) -> Iterator[str]:
-            ...
-
-        def __getitem__(self, key: str) -> str:
-            ...
-
+    from ._mypyc_hacks._typing_extensions import HasGettableStringKeys
 
 __all__ = ["RecentlyUsedContainer", "HTTPHeaderDict"]
 
